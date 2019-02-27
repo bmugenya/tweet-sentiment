@@ -7,6 +7,7 @@ from tweepy import Stream
 import twitter_credentials
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 class TwitterClient():
@@ -106,7 +107,7 @@ if __name__ == "__main__":
 
     api = twitter_client.get_twitter_client_api()
 
-    tweets = api.user_timeline(screen_name='100xcode', count=40)
+    tweets = api.user_timeline(screen_name='BrianMugenya', count=200)
     df = tweet_analayzer.tweets_to_data_frame(tweets)
 
     # print(dir(tweets[0]))
@@ -115,7 +116,7 @@ if __name__ == "__main__":
     # Average length over all tweets
     print(np.mean(df['len']))
 
-    # Number of likes for the most liked twee
+    # Number of likes for the most liked tweets
     print(np.max(df['likes']))
 
     # Number of retweets for the most retweeted tweet
@@ -123,3 +124,8 @@ if __name__ == "__main__":
 
     # Time series
     time_likes = pd.Series(data=df['likes'].values, index=df['date'])
+    time_likes.plot(figsize=(16, 4), label="likes", legend=True)
+
+    time_retweets = pd.Series(data=df['retweets'].values, index=df['date'])
+    time_retweets.plot(figsize=(16, 4), label="retweets", legend=True)
+    plt.show()
